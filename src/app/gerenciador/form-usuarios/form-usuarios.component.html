@@ -1,0 +1,145 @@
+<div class="ui-g-8 ui-g-offset-2 ui-lg-8 ui-lg-offset-2">
+  <p-fieldset legend="Cadastro de usuários" align="center" [toggleable]="true">
+    <p-growl [(value)]="msgs"></p-growl>
+    <form novalidate ngForm="formulario" #frmUsuario="ngForm" (ngSubmit)="cadastrar()">
+
+      <div class="ui-g-12 ui-lg-12"></div>
+      <div class="ui-g-4 ui-g-offset-2 ui-lg-4 ui-lg-offset-2">
+        <input id="txtNome" name="txtNome" [(ngModel)]="usuarioCadastrar.nome" type="text" size="30" required
+               pInputText class="ui-inputtext ui-corner-all ui-state-default ui-widget" placeholder="Nome">
+      </div>
+
+      <div class="ui-g-4 ui-lg-4">
+        <input id="txtEmail" name="txtEmail" [(ngModel)]="usuarioCadastrar.email" type="text" size="30" required
+               pInputText class="ui-inputtext ui-corner-all ui-state-default ui-widget" placeholder="E-mail do usuário"
+               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$">
+      </div>
+
+      <div class="ui-g-2"></div>
+      <div class="ui-g-12"></div>
+
+      <div class="ui-g-4 ui-g-offset-2 ui-lg-4 ui-lg-offset-2">
+        <input id="txtSenha" name="txtSenha" [(ngModel)]="usuarioCadastrar.senha" type="password" size="30" required minlength="6"
+               pPassword promptLabel="verificação da senha" placeholder="Senha de acesso"
+               weakLabel="senha fraca" mediumLabel="senha relevante" strongLabel="senha forte">
+      </div>
+
+      <div class="ui-g-4 ui-lg-4">
+        <input id="txtConfirmaSenha" name="txtConfirmaSenha" [(ngModel)]="usuarioCadastrar.confirmaSenha" required minlength="6"
+               type="password" size="30" pPassword promptLabel="verificação da senha" placeholder="Confirme a senha de acesso"
+               weakLabel="senha fraca" mediumLabel="senha relevante" strongLabel="senha forte">
+      </div>
+
+      <div class="ui-g-2 ui-lg-2"></div>
+
+      <div class="ui-g-12 ui-lg-12">
+        <h3>Permissões</h3>
+        <p-selectButton name="sltPermissoes" [options]="sltPermissoesCadastro"
+                        [(ngModel)]="usuarioCadastrar.permissoes" multiple="multiple"></p-selectButton>
+      </div>
+
+      <div class="ui-g-12 ui-lg-12">
+      </div>
+
+
+      <div class="ui-g-12 ui-lg-12">
+        <button pButton type="submit" icon="fa-save" iconPos="right" label="Cadastrar" [disabled]="!frmUsuario.valid"></button>
+      </div>
+
+    </form>
+
+
+  </p-fieldset>
+
+  <div class="ui-g-12 ui-lg-12">
+    <p-dataTable *ngIf="exibirTabela" emptyMessage="Não há usuários cadastrados" [value]="usuarios" selectionMode="single"
+                 [(selection)]="usuarioSelecionado" (onRowSelect)="onRowSelect($event)" [paginator]="true" rows="15" [responsive]="true">
+      <p-header>Usuários cadastrados</p-header>
+      <p-column field="nome" header="Nome" [sortable]="true"></p-column>
+      <p-column field="email" header="Email" [sortable]="true"></p-column>
+    </p-dataTable>
+
+    <p-dialog header="Usuário selecionado" [(visible)]="exibirDialog" [responsive]="true" showEffect="fade"
+              [modal]="true" (onHide)="frmEditarUsuario.resetForm();">
+      <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="usuarioSelecionado">
+        <form novalidate ngForm="formularioEditar" #frmEditarUsuario="ngForm">
+          <p-tabView>
+            <p-tabPanel header="Usuário" leftIcon="fa-user">
+              <div class="ui-grid-row">
+                <div class="ui-grid-col-4">
+                  <label for="txtNomeEditar" id="lblNome">Nome: </label>
+                </div>
+                <div class="ui-grid-col-8">
+                  <input id="txtNomeEditar" name="txtNomeEditar" [(ngModel)]="usuarioSelecionado.nome"
+                         type="text" size="30" required pInputText placeholder="Nome"
+                         class="ui-inputtext ui-corner-all ui-state-default ui-widget" pattern="^[a-zA-Z]+$">
+                </div>
+              </div>
+              <div class="ui-grid-row">
+                <div class="ui-grid-col-4">
+                  <label for="txtEmailEditar" id="lblEmail">E-mail: </label>
+                </div>
+                <div class="ui-grid-col-8">
+                  <input id="txtEmailEditar" name="txtEmailEditar" [(ngModel)]="usuarioSelecionado.email"
+                         type="text" size="30" required pInputText class="ui-inputtext ui-corner-all ui-state-default ui-widget"
+                         placeholder="E-mail do usuário" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$">
+                </div>
+              </div>
+              <div class="ui-grid-row">
+                <div class="ui-grid-col-4">
+                  <label for="txtSenhaEditar" id="lblSenha">Senha: </label>
+                </div>
+                <div class="ui-grid-col-8">
+                  <input id="txtSenhaEditar" name="txtSenhaEditar" [(ngModel)]="usuarioSelecionado.senha"
+                         required minlength="6" type="password" size="30" pPassword promptLabel="verificação da senha"
+                         placeholder="Confirme a senha de acesso" weakLabel="senha fraca" mediumLabel="senha relevante"
+                         strongLabel="senha forte" #txtSenha="ngModel">
+                </div>
+              </div>
+              <div class="ui-grid-row">
+                <div class="ui-grid-col-4">
+                  <label for="txtConfirmaSenhaEditar" id="lblConfirmaSenha">Redigite a senha: </label>
+                </div>
+                <div class="ui-grid-col-8">
+                  <input id="txtConfirmaSenhaEditar" name="txtConfirmaSenhaEditar" [(ngModel)]="usuarioSelecionado.confirmaSenha"
+                         required minlength="6" type="password" size="30" pPassword promptLabel="verificação da senha"
+                         placeholder="Confirme a senha de acesso" weakLabel="senha fraca" mediumLabel="senha relevante"
+                         strongLabel="senha forte" vali>
+                </div>
+              </div>
+              <div class="ui-grid-row">
+                <div class="ui-grid-col-12">
+                  <br>
+                </div>
+              </div>
+            </p-tabPanel>
+            <p-tabPanel header="Permissões" leftIcon="fa-lock">
+              <label for="sltPermissoes" id="lblPermissoes">Permissões</label>
+              <p-selectButton id="sltPermissoes" name="sltPermissoes" [options]="sltPermissoesAtualizar"
+                              [(ngModel)]="idsPermissoesUsuarioSelecionado" multiple="multiple"></p-selectButton>
+            </p-tabPanel>
+          </p-tabView>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-2">
+            </div>
+            <div class="ui-grid-col-3">
+              <button type="button" pButton icon="fa-close" (click)="excluir()" label="Excluir"
+                      [disabled]="frmEditarUsuario?.dirty"></button>
+            </div>
+            <div class="ui-grid-col-2">
+            </div>
+            <div class="ui-grid-col-3">
+              <button type="button" pButton icon="fa-check" (click)="atualizar()" label="Salvar"></button>
+            </div>
+            <div class="ui-grid-col-2">
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </p-dialog>
+  </div>
+
+  <app-form-login></app-form-login>
+</div>
+<div class="ui-g-2 ui-lg-2 "></div>

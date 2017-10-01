@@ -1,0 +1,29 @@
+<p-messages [(value)]="informativo" class="ui-g-10 ui-lg-10 ui-g-offset-1 ui-lg-offset-1" style="position: absolute"></p-messages>
+<div class="ui-g-12 ui-lg-12" style="padding-bottom: 30%"></div>
+  <p-panel styleClass="ui-g-4 ui-lg-4 ui-g-offset-8 ui-lg-offset-8">
+    <p-header>
+      <div class="ui-helper-clearfix">
+        <span class="ui-panel-title" style="font-size:16px;display:inline-block;margin-top:2px">Acesso ao sistema</span>
+      </div>
+    </p-header>
+    <form novalidate ngForm="formulario" #frmLogin="ngForm" (ngSubmit)="logar()">
+      <div class="ui-g-12 ui-lg-12">
+        <div class="ui-inputgroup">
+          <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
+          <input id="txtNome" name="txtNome" [(ngModel)]="usuario.nome" type="text" pInputText placeholder="Nome de usuário ou e-mail" style="width:300px">
+        </div>
+      </div>
+
+      <div class="ui-g-12 ui-lg-12">
+        <div class="ui-inputgroup">
+          <span class="ui-inputgroup-addon"><i class="fa fa-lock"></i></span>
+          <input id="txtSenha" name="txtSenha" [(ngModel)]="usuario.senha" type="password" pInputText placeholder="Senha" style="width:300px">
+        </div>
+      </div>
+
+      <div class="ui-g-3 ui-lg-3 ui-g-offset-3 ui-lg-offset-3">
+        <button pButton type="submit" icon="fa-sign-in" label="Acessar"></button>
+      </div>
+      <div class="ui-g-6 ui-lg-6"></div>
+    </form>
+  </p-panel>
